@@ -48,10 +48,6 @@ func (cli *CLI) searchMenu() {
 	}
 	cli.displayMenu(searchCategory)
 
-	// for i, item := range results {
-	// 	cli.displayMenuItem(item, true, i)
-	// }
-
 	fmt.Println("\n0. Back to Main Menu")
 	fmt.Print("\nSelect item to add to cart (or back): ")
 
