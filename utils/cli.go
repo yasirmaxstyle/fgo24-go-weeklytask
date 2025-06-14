@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type CLI struct {
@@ -55,7 +56,7 @@ func (cli *CLI) Run() {
 					continue
 				}
 
-				if categoryChoice == len(cli.menu.MenuCategories)+1 {
+				if categoryChoice == 0 {
 					break // Back to main menu
 				}
 
@@ -70,7 +71,7 @@ func (cli *CLI) Run() {
 						}
 
 						category := cli.menu.MenuCategories[categoryChoice-1]
-						if itemChoice == len(category.Items)+1 {
+						if itemChoice == 0 {
 							break // Back to categories
 						}
 
@@ -102,6 +103,51 @@ func (cli *CLI) Run() {
 			cli.waitForEnter()
 		}
 	}
+}
+
+func (cli *CLI) displayMenu(category MenuCategory) {
+	pagination := NewPagination(len(category.Items))
+	
+	for {
+		cli.clearScreen()
+		cli.displayItemsPage(category, pagination)
+		DisplayNavigationOptions()
+
+		if !cli.scanner.Scan() {
+			break
+		}
+
+		input := strings.ToLower(strings.TrimSpace(cli.scanner.Text()))
+
+		switch input {
+		case "n", "next":
+			if !pagination.NextPage() {
+				fmt.Println("You're already on the last page!")
+			}
+		case "p", "prev", "previous":
+			if !pagination.PreviousPage() {
+				fmt.Println("You're already on the first page!")
+			}
+		case "b", "back":
+			return
+		case "0", "exit":
+			os.Exit(0)
+		default:
+			fmt.Println("Invalid option. Please try again.")
+		}
+	}
+}
+
+func (cli *CLI) displayItemsPage(category MenuCategory, pagination *Pagination) {
+	cli.displayCategories()
+	DisplayPaginationInfo(pagination.CurrentPage, pagination.TotalItems, pagination.ItemsPerPage)
+
+	currentItems := pagination.GetCurrentPageItems(category.Items)
+	// startIdx := pagination.GetStartIndex()
+
+	// for i, item := range currentItems {
+	cli.displayMenuItem(currentItems, true)
+	// }
 }
 
 // Wait for user input
