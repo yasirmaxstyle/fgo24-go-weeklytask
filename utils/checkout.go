@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -38,10 +39,20 @@ func (cli *CLI) checkout() {
 	cli.scanner.Scan()
 
 	if strings.ToLower(strings.TrimSpace(cli.scanner.Text())) == "y" {
-		fmt.Println("\nOrder confirmed!")
-		fmt.Println("Order ID: CF" + strconv.FormatInt(time.Now().Unix(), 10))
-		fmt.Println("⏱ Estimated preparation time: 10-15 minutes")
-		fmt.Println("Thank you for your order!")
+		var mu sync.Mutex
+		var wg sync.WaitGroup
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			fmt.Println("\nOrder confirmed!")
+			fmt.Println("Order ID: CF" + strconv.FormatInt(time.Now().Unix(), 10))
+			fmt.Print("Preparing your order. Please wait...")
+			time.Sleep(3 * time.Second)
+			mu.Lock()
+			fmt.Println("\n\nThank you for your order!")
+			mu.Unlock()
+		}()
+		wg.Wait()
 
 		cli.cart = make([]OrderItem, 0) // Clear cart
 		cli.waitForEnter()
