@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -15,13 +16,7 @@ func (cli *CLI) filterMenu() {
 	var filteredItems []MenuItem
 	for _, category := range cli.menu.MenuCategories {
 		// Check if category is selected
-		categorySelected := len(filter.Categories) == 0
-		for _, selectedCat := range filter.Categories {
-			if selectedCat == category.ID {
-				categorySelected = true
-				break
-			}
-		}
+		categorySelected := slices.Contains(filter.Categories, category.ID)
 
 		if !categorySelected {
 			continue
