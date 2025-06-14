@@ -46,7 +46,7 @@ func (cli *CLI) filterMenu() {
 	}
 
 	cli.displayMenuItem(filteredItems, true)
-	fmt.Println("0. Back to Main Menu")
+	fmt.Println("\n0. Back to Main Menu")
 	fmt.Print("\nSelect item to add to cart (or back): ")
 
 	cli.scanner.Scan()
@@ -91,23 +91,8 @@ func (cli *CLI) getFilterOptions() *Filter {
 		}
 	}
 
-	fmt.Println("\nTemperature options:")
-	fmt.Println("1. Hot items")
-	fmt.Println("2. Iced items")
-	fmt.Print("Select temperature (1, 2, or both separated by comma): ")
-	cli.scanner.Scan()
-	tempInput := strings.TrimSpace(cli.scanner.Text())
-
-	hot := strings.Contains(tempInput, "1")
-	iced := strings.Contains(tempInput, "2")
-	if tempInput == "" {
-		hot, iced = true, true
-	}
-
 	return &Filter{
 		Categories: selectedCategories,
-		Hot:        hot,
-		Iced:       iced,
 		Available:  true,
 	}
 }
@@ -115,22 +100,6 @@ func (cli *CLI) getFilterOptions() *Filter {
 // Check if item matches filter
 func (cli *CLI) matchesFilter(item MenuItem, filter Filter) bool {
 	if filter.Available && !item.Available {
-		return false
-	}
-
-	if !filter.Hot && !filter.Iced {
-		return true
-	}
-
-	if filter.Hot && filter.Iced {
-		return (item.Hot != nil && *item.Hot) || (item.Iced != nil && *item.Iced)
-	}
-
-	if filter.Hot && (item.Hot == nil || !*item.Hot) {
-		return false
-	}
-
-	if filter.Iced && (item.Iced == nil || !*item.Iced) {
 		return false
 	}
 
