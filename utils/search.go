@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"sync"
+	"time"
 )
 
 func (cli *CLI) searchMenu() {
@@ -31,10 +33,21 @@ func (cli *CLI) searchMenu() {
 		}
 	}
 
+	var mu sync.Mutex
+	var wg sync.WaitGroup
+
 	cli.clearScreen()
 	cli.displayHeader()
-	fmt.Printf("🔍 SEARCH RESULTS FOR: \"%s\"\n", searchTerm)
-	fmt.Printf("Found %d items\n\n", len(foundItems))
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		fmt.Printf("🔍 SEARCH RESULTS FOR: \"%s\" ...\n", searchTerm)
+		time.Sleep(3 * time.Second)
+		mu.Lock()
+		fmt.Printf("Found %d items\n\n", len(foundItems))
+		mu.Unlock()
+	}()
+	wg.Wait()
 
 	if len(foundItems) == 0 {
 		fmt.Println("No items found matching your search")
