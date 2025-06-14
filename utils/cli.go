@@ -107,7 +107,7 @@ func (cli *CLI) Run() {
 
 func (cli *CLI) displayMenu(category MenuCategory) {
 	pagination := NewPagination(len(category.Items))
-	
+
 	for {
 		cli.clearScreen()
 		cli.displayItemsPage(category, pagination)
@@ -128,7 +128,7 @@ func (cli *CLI) displayMenu(category MenuCategory) {
 			if !pagination.PreviousPage() {
 				fmt.Println("You're already on the first page!")
 			}
-		case "b", "back":
+		case "s", "select":
 			return
 		case "0", "exit":
 			os.Exit(0)
@@ -143,11 +143,11 @@ func (cli *CLI) displayItemsPage(category MenuCategory, pagination *Pagination) 
 	DisplayPaginationInfo(pagination.CurrentPage, pagination.TotalItems, pagination.ItemsPerPage)
 
 	currentItems := pagination.GetCurrentPageItems(category.Items)
-	// startIdx := pagination.GetStartIndex()
+	startIdx := pagination.GetStartIndex()
 
-	// for i, item := range currentItems {
-	cli.displayMenuItem(currentItems, true)
-	// }
+	for i, item := range currentItems {
+		cli.displayMenuItem(item, true, startIdx+i)
+	}
 }
 
 // Wait for user input
