@@ -45,7 +45,16 @@ func (cli *CLI) filterMenu() {
 		return
 	}
 
-	cli.displayMenuItem(filteredItems, true)
+	filterCategory := MenuCategory{
+		Name:  "Filter Results",
+		Items: filteredItems,
+	}
+
+	cli.displayMenu(filterCategory)
+	// for i, item := range filteredItems {
+	// 	cli.displayMenuItem(item, true, i)
+	// }
+
 	fmt.Println("\n0. Back to Main Menu")
 	fmt.Print("\nSelect item to add to cart (or back): ")
 
