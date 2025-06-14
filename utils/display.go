@@ -38,7 +38,7 @@ func (cli *CLI) displayCategories() {
 	for i, category := range cli.menu.MenuCategories {
 		fmt.Printf("%d. %s (%d items)\n", i+1, category.Name, len(category.Items))
 	}
-	fmt.Println("0. Back to Main Menu")
+	fmt.Println("\n0. Back to Main Menu")
 	fmt.Print("\nSelect category: ")
 }
 
@@ -50,10 +50,19 @@ func (cli *CLI) displayCategoryItems(categoryIndex int) {
 	category := cli.menu.MenuCategories[categoryIndex]
 	fmt.Printf("%s\n", strings.ToUpper(category.Name))
 
-	cli.displayMenuItem(category.Items, true)
+	cli.displayMenu(category)
 
-	fmt.Println("0. Back to Categories")
+	fmt.Println("\n0. Back to Categories")
 	fmt.Print("\nSelect item to add to cart (or back): ")
+}
+
+func DisplayPaginationInfo(currentPage, totalItems, itemsPerPage int) {
+	totalPages := (totalItems + itemsPerPage - 1) / itemsPerPage
+	startIdx := currentPage * itemsPerPage
+	endIdx := min(startIdx+itemsPerPage, totalItems)
+
+	fmt.Printf("\nPage %d of %d (Items %d-%d of %d)\n\n",
+		currentPage+1, totalPages, startIdx+1, endIdx, totalItems)
 }
 
 func (cli *CLI) displayMenuItem(items []MenuItem, numbered bool) {
@@ -79,9 +88,12 @@ func (cli *CLI) displayMenuItem(items []MenuItem, numbered bool) {
 			numStr = fmt.Sprintf("%d. ", idx+1)
 		}
 
-		fmt.Printf("%s %s%s%s\n", status, numStr, item.Name, temp)
-		fmt.Printf("     Rp %s\n", FormatPrice(item.Price))
+		fmt.Printf("%s %s%s%s  Rp. %s\n", status, numStr, item.Name, temp, FormatPrice(item.Price))
 	}
+}
+
+func DisplayNavigationOptions() {
+	fmt.Print("\nOptions: [n]ext, [p]revious, [b]ack to main, [0] exit: ")
 }
 
 func (cli *CLI) clearScreen() {
