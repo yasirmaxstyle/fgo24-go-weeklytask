@@ -21,11 +21,12 @@ func (cli *CLI) searchMenu() {
 		return
 	}
 
-	var results []MenuItem
+	var foundItems []MenuItem
 	for _, category := range cli.menu.MenuCategories {
 		for _, item := range category.Items {
-			if strings.Contains(strings.ToLower(item.Name), searchTerm) {
-				results = append(results, item)
+			if strings.Contains(strings.ToLower(item.Name), searchTerm) ||
+				strings.Contains(strings.ToLower(item.Description), searchTerm) {
+				foundItems = append(foundItems, item)
 			}
 		}
 	}
@@ -33,15 +34,24 @@ func (cli *CLI) searchMenu() {
 	cli.clearScreen()
 	cli.displayHeader()
 	fmt.Printf("🔍 SEARCH RESULTS FOR: \"%s\"\n", searchTerm)
-	fmt.Printf("Found %d items\n\n", len(results))
+	fmt.Printf("Found %d items\n\n", len(foundItems))
 
-	if len(results) == 0 {
+	if len(foundItems) == 0 {
 		fmt.Println("No items found matching your search")
 		cli.waitForEnter()
 		return
 	}
 
-	cli.displayMenuItem(results, true)
+	searchCategory := MenuCategory{
+		Name:  "Search Results",
+		Items: foundItems,
+	}
+	cli.displayMenu(searchCategory)
+
+	// for i, item := range results {
+	// 	cli.displayMenuItem(item, true, i)
+	// }
+
 	fmt.Println("\n0. Back to Main Menu")
 	fmt.Print("\nSelect item to add to cart (or back): ")
 
@@ -51,11 +61,11 @@ func (cli *CLI) searchMenu() {
 		return
 	}
 
-	if choice == len(results)+1 {
+	if choice == 0 {
 		return
 	}
 
-	if choice <= len(results) {
-		cli.addToCart(results[choice-1])
+	if choice <= len(foundItems) {
+		cli.addToCart(foundItems[choice-1])
 	}
 }
