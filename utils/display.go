@@ -65,35 +65,24 @@ func DisplayPaginationInfo(currentPage, totalItems, itemsPerPage int) {
 		currentPage+1, totalPages, startIdx+1, endIdx, totalItems)
 }
 
-func (cli *CLI) displayMenuItem(items []MenuItem, numbered bool) {
-	for idx, item := range items {
-		status := "✅"
-		if !item.Available {
-			status = "❌"
-		}
-
-		temp := ""
-		if item.Hot != nil && item.Iced != nil {
-			if *item.Hot && *item.Iced {
-				temp = " 🔥❄️"
-			} else if *item.Hot {
-				temp = " 🔥"
-			} else if *item.Iced {
-				temp = " ❄️"
-			}
-		}
-
-		numStr := ""
-		if numbered {
-			numStr = fmt.Sprintf("%d. ", idx+1)
-		}
-
-		fmt.Printf("%s %s%s%s  Rp. %s\n", status, numStr, item.Name, temp, FormatPrice(item.Price))
+func (cli *CLI) displayMenuItem(item MenuItem, numbered bool, idx int) {
+	status := "Available"
+	if !item.Available {
+		status = "Out of stock"
 	}
+
+	numStr := ""
+	if numbered {
+		numStr = fmt.Sprintf("%d. ", idx+1)
+	}
+
+	fmt.Printf("\n" + strings.Repeat("=", 60) + "\n")
+	fmt.Printf("%s%s ⭐ %.2f\nDesc: %s\nStock: %s\nPrice: Rp. %s\n", numStr, item.Name, item.Rating, item.Description, status, FormatPrice(item.Price))
+
 }
 
 func DisplayNavigationOptions() {
-	fmt.Print("\nOptions: [n]ext, [p]revious, [b]ack to main, [0] exit: ")
+	fmt.Print("\nOptions: [n]ext, [p]revious, [s]elect, [0] exit: ")
 }
 
 func (cli *CLI) clearScreen() {
