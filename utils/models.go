@@ -8,14 +8,13 @@ type CoffeeShopInfo struct {
 }
 
 type MenuItem struct {
-	ID        string  `json:"id"`
-	Name      string  `json:"name"`
-	Price     int     `json:"price"`
-	Category  string  `json:"category"`
-	Available bool    `json:"available"`
-	Hot       *bool   `json:"hot,omitempty"`
-	Iced      *bool   `json:"iced,omitempty"`
-	Rating    float32 `json:"rating"`
+	ID          string  `json:"id"`
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	Price       int     `json:"price"`
+	Category    string  `json:"category"`
+	Available   bool    `json:"available"`
+	Rating      float32 `json:"rating"`
 }
 
 type MenuCategory struct {
@@ -30,15 +29,13 @@ type HomeMenuItem struct {
 }
 
 type MenuData struct {
-	CoffeeShop CoffeeShopInfo `json:"coffeeshop"`
-	HomeMenu   []HomeMenuItem `json:"home_menu"`
+	CoffeeShop     CoffeeShopInfo `json:"coffeeshop"`
+	HomeMenu       []HomeMenuItem `json:"home_menu"`
 	MenuCategories []MenuCategory `json:"menu_categories"`
 }
 
 type Filter struct {
 	Categories []string
-	Hot        bool
-	Iced       bool
 	Available  bool
 	Rating     float32
 }
