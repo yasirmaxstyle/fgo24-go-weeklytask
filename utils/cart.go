@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 // Add item to cart
@@ -72,8 +73,7 @@ func (cli *CLI) viewCart() {
 
 	fmt.Printf("💰 TOTAL: %s\n\n", cli.formatPrice(total))
 
-	fmt.Printf("%d. Continue Shopping\n", len(cli.cart)+1)
-	fmt.Printf("%d. Clear Cart\n", len(cli.cart)+2)
+	fmt.Println("99. Clear Cart")
 	fmt.Println("\n0. Back to Main Menu")
 	fmt.Print("\nSelect option: ")
 
@@ -84,9 +84,13 @@ func (cli *CLI) viewCart() {
 	}
 
 	switch choice {
-	case len(cli.cart) + 2: // Clear cart
-		cli.cart = make([]OrderItem, 0)
-		fmt.Println("Cart cleared!")
-		cli.waitForEnter()
+	case 99: // Clear cart
+		fmt.Print("Are you sure? (y/n): ")
+		cli.scanner.Scan()
+		if strings.ToLower(strings.TrimSpace(cli.scanner.Text())) == "y" {
+			cli.cart = make([]OrderItem, 0)
+			fmt.Println("Cart cleared!")
+			cli.waitForEnter()
+		}
 	}
 }
