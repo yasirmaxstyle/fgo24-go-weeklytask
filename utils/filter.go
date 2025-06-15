@@ -51,7 +51,13 @@ func (cli *CLI) filterMenu() {
 		Items: filteredItems,
 	}
 
-	cli.displayMenu(filterCategory)
+	if len(filteredItems) >= ItemsPerPage {
+		cli.displayMenu(filterCategory)
+	} else {
+		for idx, item := range filteredItems {
+			cli.displayMenuItem(item, true, idx)
+		}
+	}
 
 	fmt.Println("\n0. Back to Main Menu")
 	fmt.Print("\nSelect item to add to cart (or back): ")
@@ -95,6 +101,10 @@ func (cli *CLI) getFilterOptions() *Filter {
 			if err == nil && index >= 1 && index <= len(cli.menu.MenuCategories) {
 				selectedCategories = append(selectedCategories, cli.menu.MenuCategories[index-1].ID)
 			}
+		}
+	} else {
+		for _, category := range cli.menu.MenuCategories {
+			selectedCategories = append(selectedCategories, category.ID)
 		}
 	}
 
