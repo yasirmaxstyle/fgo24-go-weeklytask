@@ -65,7 +65,15 @@ func (cli *CLI) searchMenu() {
 		Name:  "Search Results",
 		Items: foundItems,
 	}
-	cli.displayMenu(searchCategory)
+
+	if len(foundItems) >= ItemsPerPage {
+		cli.displayMenu(searchCategory)
+	} else {
+		for idx, item := range foundItems {
+			cli.displayMenuItem(item, true, idx)
+		}
+	}
+	// cli.displayMenu(searchCategory)
 
 	fmt.Println("\n0. Back to Main Menu")
 	fmt.Print("\nSelect item to add to cart (or back): ")
