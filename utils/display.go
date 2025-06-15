@@ -23,7 +23,11 @@ func (cli *CLI) displayMainMenu() {
 	fmt.Println(strings.Repeat("-", 30))
 
 	for i, item := range cli.menu.HomeMenu {
-		fmt.Printf("%d. %s\n", i+1, item.Title)
+		if item.Title == "View Cart" {
+			fmt.Printf("%d. %s (%d)\n", i+1, item.Title, len(cli.cart))
+		} else {
+			fmt.Printf("%d. %s\n", i+1, item.Title)
+		}
 	}
 
 	fmt.Printf("\n0. Exit\n")
