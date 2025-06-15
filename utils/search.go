@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -33,6 +34,11 @@ func (cli *CLI) searchMenu() {
 		}
 	}
 
+	// sort searched items by rating in descending order
+	sort.Slice(foundItems, func(i, j int) bool {
+		return foundItems[i].Rating > foundItems[j].Rating
+	})
+
 	var mu sync.Mutex
 	var wg sync.WaitGroup
 
@@ -41,7 +47,7 @@ func (cli *CLI) searchMenu() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		fmt.Printf("🔍 SEARCH RESULTS FOR: \"%s\" ...\n", searchTerm)
+		fmt.Printf("🔍 SEARCHING RESULTS FOR: \"%s\" ...", searchTerm)
 		time.Sleep(3 * time.Second)
 		mu.Lock()
 		fmt.Printf("Found %d items\n\n", len(foundItems))
