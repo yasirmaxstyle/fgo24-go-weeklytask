@@ -27,7 +27,7 @@ func (cli *CLI) checkout() {
 		itemTotal := orderItem.Item.Price * orderItem.Quantity
 		total += itemTotal
 
-		fmt.Printf("• %s x%d = %s\n",
+		fmt.Printf("• %s x%d = Rp. %s\n",
 			orderItem.Item.Name,
 			orderItem.Quantity,
 			cli.formatPrice(itemTotal))
@@ -57,27 +57,4 @@ func (cli *CLI) checkout() {
 		cli.cart = make([]OrderItem, 0) // Clear cart
 		cli.waitForEnter()
 	}
-}
-
-// Format price to IDR
-func (cli *CLI) formatPrice(price int) string {
-	return fmt.Sprintf("Rp %s", cli.addCommas(price))
-}
-
-// Add commas to number
-func (cli *CLI) addCommas(n int) string {
-	str := strconv.Itoa(n)
-	if len(str) <= 3 {
-		return str
-	}
-
-	var result []string
-	for i, digit := range str {
-		if i > 0 && (len(str)-i)%3 == 0 {
-			result = append(result, ",")
-		}
-		result = append(result, string(digit))
-	}
-
-	return strings.Join(result, "")
 }
