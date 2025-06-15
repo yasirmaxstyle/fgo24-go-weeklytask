@@ -40,6 +40,7 @@ func (cli *CLI) displayMenu(category MenuCategory) {
 }
 
 func (cli *CLI) displayItemsPage(category MenuCategory, pagination *Pagination) {
+	cli.displayHeader()
 	cli.displayPaginationInfo(pagination.CurrentPage, pagination.TotalItems, pagination.ItemsPerPage)
 
 	currentItems := pagination.GetCurrentPageItems(category.Items)
