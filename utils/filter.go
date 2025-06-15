@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"slices"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -28,6 +29,11 @@ func (cli *CLI) filterMenu() {
 			}
 		}
 	}
+
+	// sort filtered items by rating in descending order
+	sort.Slice(filteredItems, func(i, j int) bool {
+		return filteredItems[i].Rating > filteredItems[j].Rating
+	})
 
 	cli.clearScreen()
 	cli.displayHeader()
