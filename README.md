@@ -6,6 +6,9 @@ This project is a command-line based coffee shop ordering system built with Go. 
 - Basic I/O and formatting
 - Basic use of Goroutines
 
+## Demo App
+[demo-go-cli-coffeeshop.webm](https://github.com/user-attachments/assets/bdff3666-bcf5-4acb-b324-1269e7bf9443)
+
 ## How to run this program
 ### Prerequisite
 - [Go Programming Language](https://go.dev/)
