@@ -6,6 +6,15 @@ This project is a command-line based coffee shop ordering system built with Go. 
 - Basic I/O and formatting
 - Basic use of Goroutines
 
+## App Features
+- Browsing all menu items
+- Search menu by item name or description
+- Filter menu by categories
+- Automatically sort searched and filtered result in descending order by rating
+- Adding items to cart
+- Preview cart total item in home menu
+- Purchasing items in checkout
+
 ## Demo App
 [demo-go-cli-coffeeshop.webm](https://github.com/user-attachments/assets/bdff3666-bcf5-4acb-b324-1269e7bf9443)
 
