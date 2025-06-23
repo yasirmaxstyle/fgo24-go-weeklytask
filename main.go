@@ -2,19 +2,19 @@ package main
 
 import (
 	"fmt"
-	"go-cli/utils"
-	"os"
+	"go-cli/cmd"
+	"log"
 )
 
 func main() {
-	cli := utils.NewCLI()
+	cli := cmd.NewCLI()
 
 	fmt.Println("🚀 Starting App...")
 
 	// Fetch menu data
-	if err := cli.FetchMenuData(); err != nil {
-		fmt.Printf("Error: %v\n", err)
-		os.Exit(1)
+	err := cli.FetchMenuData()
+	if err != nil {
+		log.Fatal("Failed to fetch menu data:", err)
 	}
 
 	cli.Run()
